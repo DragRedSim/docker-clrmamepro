@@ -29,7 +29,7 @@ RUN CMP_LATEST_BINARY=$( \
     curl -o /tmp/cmp.zip "https://mamedev.emulab.it/clrmamepro/$CMP_LATEST_BINARY" && \
     unzip /tmp/cmp.zip -d /opt/clrmamepro/ 
     # Allow window decorations
-#RUN sed -i '/<decor>no<\/decor>/d' /etc/xdg/openbox/rc.xml
+RUN sed -i '/<decor>no<\/decor>/d' /var/run/openbox/rc.xml
     # Clean up
 RUN apt-get remove -y \
         ca-certificates \
