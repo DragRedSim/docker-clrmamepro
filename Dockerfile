@@ -1,4 +1,4 @@
-FROM jlesage/baseimage-gui:ubuntu-18.04
+FROM jlesage/baseimage-gui:ubuntu-22.04
 
 RUN set -x && \
     apt-get update && \
@@ -10,6 +10,7 @@ RUN set -x && \
         unzip \
         wine64 \
         zip \
+        winbind \
         && \
     # Find latest clrmamepro
     CMP_LATEST_BINARY=$( \
