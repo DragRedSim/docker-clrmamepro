@@ -1,4 +1,5 @@
 FROM jlesage/baseimage-gui:ubuntu-22.04-v4
+LABEL Name=dockerclrmamepro Version=0.0.1
 
 RUN set -x && \
     apt-get update && \
@@ -10,10 +11,9 @@ RUN set -x && \
         unzip \
         wine64 \
         zip \
-        winbind \
-        && \
+        winbind 
     # Find latest clrmamepro
-    CMP_LATEST_BINARY=$( \
+RUN CMP_LATEST_BINARY=$( \
         curl https://mamedev.emulab.it/clrmamepro/ | \
         sed -n 's/.*href="\([^"]*\).*/\1/p' | \
         grep -i binaries | \
@@ -27,11 +27,11 @@ RUN set -x && \
     # Install clrmamepro
     mkdir -p /opt/clrmamepro && \
     curl -o /tmp/cmp.zip "https://mamedev.emulab.it/clrmamepro/$CMP_LATEST_BINARY" && \
-    unzip /tmp/cmp.zip -d /opt/clrmamepro/ && \
+    unzip /tmp/cmp.zip -d /opt/clrmamepro/ 
     # Allow window decorations
-    sed -i '/<decor>no<\/decor>/d' /etc/xdg/openbox/rc.xml && \
+#RUN sed -i '/<decor>no<\/decor>/d' /etc/xdg/openbox/rc.xml
     # Clean up
-    apt-get remove -y \
+RUN apt-get remove -y \
         ca-certificates \
         curl \
         && \
