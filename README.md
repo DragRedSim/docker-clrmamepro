@@ -1,6 +1,6 @@
-# mikenye/clrmamepro
+# dragredsim/clrmamepro
 
-Docker container for Clrmamepro
+Docker container for Clrmamepro (heavily based upon [mikenye/docker-clrmamepro](https://github.com/mikenye/docker-clrmamepro))
 
 The GUI of the application is accessed through a modern web browser (no installation or configuration needed on client side) or via any VNC client.
 
@@ -12,7 +12,7 @@ Clrmamepro is a ROM organisation and management tool for Windows. This container
 
 ---
 
-This container is based on the absolutely fantastic [jlesage/baseimage-gui](https://hub.docker.com/r/jlesage/baseimage-gui). All the hard work has been done by them, and I shamelessly copied their README.md too. I've cut the README.md down quite a bit, for advanced usage I suggest you check out the [README](https://github.com/jlesage/docker-handbrake/blob/master/README.md) from [jlesage/baseimage-gui](https://hub.docker.com/r/jlesage/baseimage-gui).
+This container is based on the absolutely fantastic [jlesage/baseimage-gui](https://hub.docker.com/r/jlesage/baseimage-gui). All the hard work has been done by them, and I shamelessly copied their README.md too. I've cut the README.md down quite a bit, for advanced usage I suggest you check out the [README](https://github.com/jlesage/docker-baseimage-gui/blob/master/README.md) from [jlesage/baseimage-gui](https://github.com/jlesage/docker-baseimage-gui).
 
 ---
 
@@ -21,7 +21,7 @@ This container is based on the absolutely fantastic [jlesage/baseimage-gui](http
 **NOTE**: The Docker command provided in this quick start is given as an example
 and parameters should be adjusted to your need.
 
-Launch the Picard docker container with the following command:
+Launch the CLRMamePro docker container with the following command:
 
 ```shell
 docker run -d \
@@ -46,7 +46,11 @@ Where:
 
 * `/path/to/clrmamepro`: This is where the application stores its configuration, datfiles, roms and any other files needing persistency.
 
-Browse to `http://your-host-ip:5800` to access the Picard GUI. The mounted volumes are located under `/opt/clrmamepro`.
+NOTE: it is currently necessary to map each folder individually. This is because the parent folder (`/opt/clrmamepro`) also contains the executable file for this program, as part of the built image. Attempting to map directly to this folder will cause the application to be unable to be found.
+
+You may also want to bind mount some of the files used for configuration by CLRMamePro, to make adjusting the configuration easier.
+
+Browse to `http://your-host-ip:5800` to access the CLRMamePro GUI. The mounted volumes are located under `/opt/clrmamepro`.
 
 ### Environment Variables
 
@@ -115,7 +119,7 @@ version: '2.0'
 
 services:
   clrmamepro:
-    image: mikenye/clrmamepro
+    image: dragredsim/clrmamepro
     tty: true
     container_name: clrmamepro
     restart: always
@@ -141,7 +145,7 @@ the Docker image, the following steps can be followed:
 
   1. Fetch the latest image:
 ```shell
-docker pull mikenye/clrmamepro
+docker pull dragredsim/clrmamepro
 ```
   2. Stop the container:
 ```shell
@@ -267,4 +271,4 @@ docker exec -ti clrmamepro bash
 
 ## Support or Contact
 
-Having troubles with the container or have questions?  Please [create a new issue](https://github.com/mikenye/docker-clrmamepro/issues).
+Having troubles with the container or have questions?  Please [create a new issue](https://github.com/dragredsim/docker-clrmamepro/issues).
