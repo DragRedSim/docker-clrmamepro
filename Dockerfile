@@ -10,7 +10,8 @@ RUN add-pkg \
     unzip \
     wine64 \
     zip \
-    winbind 
+    winbind \
+
     # Find latest clrmamepro
 RUN CMP_LATEST_BINARY=$( \
     curl https://mamedev.emulab.it/clrmamepro/ | \
@@ -28,7 +29,9 @@ RUN CMP_LATEST_BINARY=$( \
     curl -o /tmp/cmp.zip "https://mamedev.emulab.it/clrmamepro/$CMP_LATEST_BINARY" && \
     unzip /tmp/cmp.zip -d /opt/clrmamepro/ 
     # Allow window decorations
-RUN sed-patch '/<decor>no<\/decor>/d' /run/openbox/rc.xml
+    # Modifies the template which is implemented by cont-init.d/10-openbox.sh; is there a better way to modify this?
+    #Added a "match" file at /etc/openbox/main-window-selection.xml to never match and maximise a window.
+#RUN sed-patch '/<decor>no<\/decor>/d' /opt/base/etc/openbox/rc.xml.template
     # Clean up
 RUN del-pkg retrieve
 
