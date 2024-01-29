@@ -10,8 +10,7 @@ RUN add-pkg \
     unzip \
     wine64 \
     zip \
-    winbind \
-
+    winbind
     # Find latest clrmamepro
 RUN CMP_LATEST_BINARY=$( \
     curl https://mamedev.emulab.it/clrmamepro/ | \
