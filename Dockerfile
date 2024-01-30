@@ -38,8 +38,6 @@ RUN apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/* /tmp/*
 
-COPY startapp.sh /startapp.sh
-COPY etc/ /etc/
-COPY run_native_applications.reg /run_native_applications.reg
+COPY rootfs/ /
 
 ENV APP_NAME="CLRMamePro"
