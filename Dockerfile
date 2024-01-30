@@ -2,7 +2,6 @@ FROM jlesage/baseimage-gui:ubuntu-22.04-v4
 LABEL Name=dockerclrmamepro Version=0.0.1
 
 RUN set -x && \
-    apt-get update && \
     add-pkg --virtual retrieve ca-certificates curl
 RUN add-pkg \
     p7zip-full \
