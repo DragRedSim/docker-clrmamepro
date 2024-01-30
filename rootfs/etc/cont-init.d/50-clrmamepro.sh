@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv sh
+#!/bin/sh
 #shellcheck shell=sh
 
 set -e # Exit immediately if a command exits with a non-zero status.

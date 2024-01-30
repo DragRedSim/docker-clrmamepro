@@ -2,14 +2,14 @@ FROM jlesage/baseimage-gui:ubuntu-22.04-v4
 LABEL Name=dockerclrmamepro Version=0.0.1
 
 RUN set -x && \
-    add-pkg --virtual retrieve ca-certificates curl
+    add-pkg ca-certificates curl
 RUN add-pkg \
     p7zip-full \
     p7zip-rar \
     unzip \
     wine64 \
-    zip \
-    winbind
+    zip
+    #winbind
     # Find latest clrmamepro
 RUN CMP_LATEST_BINARY=$( \
     curl https://mamedev.emulab.it/clrmamepro/ | \
@@ -31,7 +31,7 @@ RUN CMP_LATEST_BINARY=$( \
     #Added a "match" file at /etc/openbox/main-window-selection.xml to never match and maximise a window.
 #RUN sed-patch '/<decor>no<\/decor>/d' /opt/base/etc/openbox/rc.xml.template
     # Clean up
-RUN del-pkg retrieve
+RUN del-pkg curl
 
 RUN apt-get autoremove -y && \
     apt-get clean -y && \
