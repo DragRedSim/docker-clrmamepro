@@ -44,7 +44,7 @@ jobs:
       - name: Check for new version of CLRMamePro
         id: get-latest
         run:
-          pipenv run check-clrmamepro.py
+          pipenv run python check-clrmamepro.py
     outputs:
       latest-version: ${{ steps.get-latest.outputs.LATEST_VERSION }} 
           
