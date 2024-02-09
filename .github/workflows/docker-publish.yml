@@ -38,6 +38,9 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pipenv'
+      - name: Install pipenv
+        run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
+      - run: pipenv install
       - name: Check for new version of CLRMamePro
         id: get-latest
         run:
