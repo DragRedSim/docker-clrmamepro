@@ -9,7 +9,10 @@ on:
   schedule:
     - cron: '29 9 * * *'
   push:
-    branches: [ "master" ]
+    branches: [ 
+      "master",
+      "deploy_test"
+    ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
@@ -21,10 +24,23 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
 
-
 jobs:
+  check-new-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pipenv'
+      - name: Check for new version of CLRMamePro
+        id: get-latest
+        run:
+          python check-clrmamepro.py
+          
   build:
-
+    if: ${{ vars.LATEST_BUILT_VERSION != env.LATEST_VERSION }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -102,3 +118,9 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+      - name: Update last-built information
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ${{ vars.LATEST_BUILT_VERSION }}
