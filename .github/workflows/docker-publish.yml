@@ -64,9 +64,11 @@ jobs:
       - name: Log key info
         run: |
           echo "LATEST_BUILT_VERSION (repo variable): '${{ vars.LATEST_BUILT_VERSION }}'"
-          echo "As JSON: '${{ toJson(vars.LATEST_BUILT_VERSION) }}"
+          echo "As JSON: '${{ toJson(vars.LATEST_BUILT_VERSION) }}'"
+          echo "vars as JSON: '${{ toJson(vars) }}'"
           echo "LATEST_VERSION (output): '${{ needs.check-new-version.outputs.latest-version }}'"
-          echo "As JSON: '${{ toJson(needs.check_new_version.outputs.latest-version) }}"
+          echo "As JSON: '${{ toJson(needs.check_new_version.outputs.latest-version) }}'"
+          echo "needs as JSON: '${{ toJson(needs) }}"
           echo "Equality check: '${{ vars.LATEST_BUILT_VERSION == needs.check_new_version.outputs.latest-version }}'"
           echo "Equality check as JSON: '${{ toJson(vars.LATEST_BUILT_VERSION) == toJson(needs.check_new_version.outputs.latest-version) }}'"
 
