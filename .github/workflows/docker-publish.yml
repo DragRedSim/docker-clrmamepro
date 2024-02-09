@@ -52,19 +52,21 @@ jobs:
     needs: check-new-version
     if: ${{ vars.LATEST_BUILT_VERSION != needs.check_new_version.outputs.latest-version }}
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      packages: write
+    permissions: write-all
+      #contents: write
+      #packages: write
       # This is used to complete the identity challenge
       # with sigstore/fulcio when running outside of PRs.
-      id-token: write
-      actions: write
+      #id-token: write
+      #actions: write
 
     steps:
       - name: Log key info
         run: |
           echo "LATEST_BUILT_VERSION (repo variable): ${{ vars.LATEST_BUILT_VERSION }}"
           echo "LATEST_VERSION (output): ${{ needs.check-new-version.outputs.latest-version }}"
+          echo "Equality check: ${{ vars.LATEST_BUILT_VERSION != needs.check_new_version.outputs.latest-version }}"
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
