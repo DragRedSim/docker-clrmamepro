@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import os, requests
 import configparser
 
@@ -7,5 +9,8 @@ def get_version():
     parser.read_string(homepage.text)
     return parser['clrmamepro']['version']
 
+version = get_version()
 with open(os.environ['GITHUB_OUTPUT'], "a") as env:
-    print(f"LATEST_VERSION={get_version()}\n", file=env)
+    print(f"LATEST_VERSION={version}\n", file=env)
+
+print(f"Latest version: {version}")
