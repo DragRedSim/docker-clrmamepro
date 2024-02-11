@@ -11,6 +11,8 @@ on:
     - cron: '29 9 * * *'
   push:
     branches: [ "master" ]
+    # Note that pushes will trigger a workflow, but may not trigger a full rebuild, due to the version variable being checked.
+    # Manual runs of the workflow from the Github website will ignore this check, and fully rebuild the image.
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:

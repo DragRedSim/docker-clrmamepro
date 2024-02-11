@@ -40,7 +40,8 @@ RUN apt-get autoremove -y && \
 
 COPY rootfs/ /
 
-RUN mv -t /config/clrmamepro \
+RUN mkdir -p /config/clrmamepro && \
+    mv -t /config/clrmamepro \
         /opt/clrmamepro/engine.cfg \
         /opt/clrmamepro/setformat.xml \
         /opt/clrmamepro/stats.ini \
