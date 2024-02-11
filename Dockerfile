@@ -2,8 +2,9 @@ FROM jlesage/baseimage-gui:ubuntu-22.04-v4
 LABEL Name=dockerclrmamepro Version=0.0.1
 
 RUN set -x && \
-    add-pkg ca-certificates curl
-RUN add-pkg \
+    add-pkg \
+    ca-certificates \
+    curl \
     p7zip-full \
     p7zip-rar \
     unzip \
@@ -39,4 +40,40 @@ RUN apt-get autoremove -y && \
 
 COPY rootfs/ /
 
+RUN mv -t /config/clrmamepro \
+        /opt/clrmamepro/engine.cfg \
+        /opt/clrmamepro/setformat.xml \
+        /opt/clrmamepro/stats.ini \
+        /opt/clrmamepro/urls.ini \
+        /opt/clrmamepro/version64.ini \
+        /opt/clrmamepro/whatsnew.txt \
+        /opt/clrmamepro/backup \
+        /opt/clrmamepro/buttons \
+        /opt/clrmamepro/datfiles \
+        /opt/clrmamepro/dir2dat \
+        /opt/clrmamepro/downloads \
+        /opt/clrmamepro/fastscans \
+        /opt/clrmamepro/headers \
+        /opt/clrmamepro/logs \
+        /opt/clrmamepro/scans \
+        /opt/clrmamepro/settings && \
+    ln --symbolic -t /opt/clrmamepro \
+        /config/clrmamepro/engine.cfg \
+        /config/clrmamepro/setformat.xml \
+        /config/clrmamepro/stats.ini \
+        /config/clrmamepro/urls.ini \
+        /config/clrmamepro/version64.ini \
+        /config/clrmamepro/whatsnew.txt \
+        /config/clrmamepro/backup \
+        /config/clrmamepro/buttons \
+        /config/clrmamepro/datfiles \
+        /config/clrmamepro/dir2dat \
+        /config/clrmamepro/downloads \
+        /config/clrmamepro/fastscans \
+        /config/clrmamepro/headers \
+        /config/clrmamepro/logs \
+        /config/clrmamepro/scans \
+        /config/clrmamepro/settings 
+
 ENV APP_NAME="CLRMamePro"
+VOLUME /config/clrmamepro

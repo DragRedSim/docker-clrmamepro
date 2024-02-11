@@ -21,17 +21,42 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
 
-
 jobs:
-  build:
-
+  check-new-version:
     runs-on: ubuntu-latest
     permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pipenv'
+      - name: Install pipenv
+        run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
+      - run: pipenv install
+      - name: Check for new version of CLRMamePro
+        id: get-latest
+        run:
+          pipenv run python check-clrmamepro.py
+    outputs:
+      latest-version: ${{ steps.get-latest.outputs.LATEST_VERSION }} 
+          
+  build:
+    needs: check-new-version
+    if: ${{ vars.LATEST_BUILT_VERSION != needs.check-new-version.outputs.latest-version }}
+    runs-on: ubuntu-latest
+    permissions: 
       contents: read
       packages: write
       # This is used to complete the identity challenge
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
+      #actions: write
 
     steps:
       - name: Checkout repository
@@ -73,8 +98,13 @@ jobs:
             type=ref,event=branch
             type=ref,event=tag
             type=ref,event=pr
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest,enable={{is_default_branch}}    
+            type=raw,value=v4-${{ needs.check-new-version.outputs.latest-version }}
+          #in this case, v4 is referencing the v4 version of the baseimage used in the Dockerfile
 
+      - name: Log Docker tags
+        run: echo ${{ steps.meta.outputs.tags }}
+        
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
@@ -102,3 +132,11 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+      - name: Update last-built information
+        uses: mmoyaferrer/set-github-variable@v1.0.0
+        with:
+          name: 'LATEST_BUILT_VERSION'
+          value: ${{ needs.check-new-version.outputs.latest-version }}
+          repository: ${{ github.repository }}
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
