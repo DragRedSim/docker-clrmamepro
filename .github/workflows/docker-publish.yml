@@ -6,6 +6,7 @@ name: Docker
 # documentation.
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '29 9 * * *'
   push:
@@ -14,6 +15,7 @@ on:
     tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ "master" ]
+  
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -48,7 +50,7 @@ jobs:
           
   build:
     needs: check-new-version
-    if: ${{ vars.LATEST_BUILT_VERSION != needs.check-new-version.outputs.latest-version }}
+    if: ${{ vars.LATEST_BUILT_VERSION != needs.check-new-version.outputs.latest-version || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     permissions: 
       contents: read
