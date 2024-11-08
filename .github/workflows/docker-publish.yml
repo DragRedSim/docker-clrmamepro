@@ -113,7 +113,7 @@ jobs:
         uses: docker/build-push-action@v6.9.0
         with:
           context: .
-          build-args: APP_VERSION:${{ needs.check-new-version.outputs.latest-version }}
+          build-args: CMP_LATEST:${{ needs.check-new-version.outputs.latest-version }}
           push: ${{ github.event_name != 'pull_request' && github.ref_name == 'main' }}
           load: ${{ github.event_name == 'pull_request' || github.ref_name != 'main' }}
           tags: ${{ steps.meta.outputs.tags }}
@@ -142,7 +142,8 @@ jobs:
           cosign sign --yes ${images}
 
       - name: Update last-built information
-        uses: mmoyaferrer/set-github-variable@v1.0.0
+        uses: action-pack/set-variable@v1
+        if: github.event_name != 'pull_request' && github.ref_name == 'main'
         with:
           name: 'LATEST_BUILT_VERSION'
           value: ${{ needs.check-new-version.outputs.latest-version }}

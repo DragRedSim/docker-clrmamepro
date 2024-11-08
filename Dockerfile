@@ -80,5 +80,5 @@ RUN mkdir -p /config/clrmamepro && \
         /config/clrmamepro/settings 
 
 ENV APP_NAME="CLRMamePro"
-ENV DOCKER_IMAGE_VERSION=${IMAGE_VERSION}
+ENV DOCKER_IMAGE_VERSION="${IMAGE_VERSION}-${APP_VERSION}"
 VOLUME /config/clrmamepro
