@@ -115,6 +115,7 @@ jobs:
           context: .
           build-args: APP_VERSION:${{ needs.check-new-version.outputs.latest-version }}
           push: ${{ github.event_name != 'pull_request' && github.ref_name == 'main' }}
+          load: ${{ github.event_name == 'pull_request' || github.ref_name != 'main' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
