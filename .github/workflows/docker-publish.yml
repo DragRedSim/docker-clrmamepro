@@ -31,6 +31,9 @@ jobs:
       contents: read
 
     steps:
+      - name: Print calling event data
+        run: echo ${{ github.event }}
+        
       - name: Checkout repository
         uses: actions/checkout@v4
 
