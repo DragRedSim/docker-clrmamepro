@@ -23,9 +23,9 @@ RUN APP_VERSION=$( \
     grep -i _64.zip | \
     sort -r | \
     head -1 \
-    ) &&
+    ) && \
     # Document version
-	echo $(basename --suffix=.zip $APP_VERSION | cut -d "_" -f 1) >> /CMP_VERSION &&
+	echo $(basename --suffix=.zip $APP_VERSION | cut -d "_" -f 1) >> /CMP_VERSION && \
     # Install clrmamepro
 	mkdir -p /opt/clrmamepro && \
     curl -o /tmp/cmp.zip "https://mamedev.emulab.it/clrmamepro/$APP_VERSION" && \
