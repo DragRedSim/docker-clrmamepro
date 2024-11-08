@@ -79,6 +79,11 @@ RUN mkdir -p /config/clrmamepro && \
         /config/clrmamepro/scans \
         /config/clrmamepro/settings 
 
+
+ARG BASEIMG_VER
+RUN export IMAGE_VERSION="$(cat /CMP_VERSION)" && \
+    set-cont-env IMAGE_VERSION="${BASEIMG_VER}"
+    
 ENV APP_NAME="CLRMamePro"
 ENV DOCKER_IMAGE_VERSION="${IMAGE_VERSION}-${APP_VERSION}"
 VOLUME /config/clrmamepro
