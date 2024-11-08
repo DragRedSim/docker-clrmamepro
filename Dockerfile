@@ -1,5 +1,5 @@
-FROM jlesage/baseimage-gui:ubuntu-22.04-v4
-LABEL Name=dockerclrmamepro Version=0.0.1
+FROM jlesage/baseimage-gui:ubuntu-24.04-v4
+LABEL Name=docker-clrmamepro Version=0.0.1
 
 RUN set -x && \
     add-pkg \
@@ -12,7 +12,7 @@ RUN set -x && \
     zip
     #winbind
     # Find latest clrmamepro
-RUN CMP_LATEST_BINARY=$( \
+ENV APP_VERSION=$( \
     curl https://mamedev.emulab.it/clrmamepro/ | \
     sed -n 's/.*href="\([^"]*\).*/\1/p' | \
     grep -i binaries | \
@@ -20,12 +20,12 @@ RUN CMP_LATEST_BINARY=$( \
     grep -i _64.zip | \
     sort -r | \
     head -1 \
-    ) && \
+    )
     # Document version
-    echo $(basename --suffix=.zip $CMP_LATEST_BINARY | cut -d "_" -f 1) >> /VERSIONS && \
+RUN echo $(basename --suffix=.zip $APP_VERSION | cut -d "_" -f 1) >> /VERSIONS && \
     # Install clrmamepro
     mkdir -p /opt/clrmamepro && \
-    curl -o /tmp/cmp.zip "https://mamedev.emulab.it/clrmamepro/$CMP_LATEST_BINARY" && \
+    curl -o /tmp/cmp.zip "https://mamedev.emulab.it/clrmamepro/$APP_VERSION" && \
     unzip /tmp/cmp.zip -d /opt/clrmamepro/ 
     # Allow window decorations
     # Modifies the template which is implemented by cont-init.d/10-openbox.sh; is there a better way to modify this?
@@ -77,4 +77,5 @@ RUN mkdir -p /config/clrmamepro && \
         /config/clrmamepro/settings 
 
 ENV APP_NAME="CLRMamePro"
+ENV DOCKER_IMAGE_VERSION=${IMAGE_VERSION}
 VOLUME /config/clrmamepro
