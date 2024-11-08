@@ -68,7 +68,7 @@ jobs:
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
-        if: github.event_name != 'pull_request' && github.ref_name == 'main'
+        if: github.event_name != 'pull_request'
         uses: sigstore/cosign-installer@v3.7.0
 
       # Set up BuildKit Docker container builder to be able to build
