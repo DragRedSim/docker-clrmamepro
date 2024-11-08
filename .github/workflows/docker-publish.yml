@@ -115,7 +115,8 @@ jobs:
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }}
+          build-args: APP_VERSION:${{ needs.check-new-version.outputs.latest-version }}
+          push: ${{ github.event_name != 'pull_request' && github.ref_name == "main" }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha

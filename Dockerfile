@@ -11,8 +11,11 @@ RUN set -x && \
     wine64 \
     zip
     #winbind
+    
+ARG CMP_LATEST
+ENV APP_VERSION=${CMP_LATEST:-unknown}
     # Find latest clrmamepro
-ENV APP_VERSION=$( \
+RUN APP_VERSION=$( \
     curl https://mamedev.emulab.it/clrmamepro/ | \
     sed -n 's/.*href="\([^"]*\).*/\1/p' | \
     grep -i binaries | \
@@ -20,11 +23,11 @@ ENV APP_VERSION=$( \
     grep -i _64.zip | \
     sort -r | \
     head -1 \
-    )
+    ) &&
     # Document version
-RUN echo $(basename --suffix=.zip $APP_VERSION | cut -d "_" -f 1) >> /VERSIONS && \
+	echo $(basename --suffix=.zip $APP_VERSION | cut -d "_" -f 1) >> /CMP_VERSION &&
     # Install clrmamepro
-    mkdir -p /opt/clrmamepro && \
+	mkdir -p /opt/clrmamepro && \
     curl -o /tmp/cmp.zip "https://mamedev.emulab.it/clrmamepro/$APP_VERSION" && \
     unzip /tmp/cmp.zip -d /opt/clrmamepro/ 
     # Allow window decorations
