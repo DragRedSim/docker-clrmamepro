@@ -110,11 +110,11 @@ jobs:
         id: find_base
         uses: flownative/action-docker-get-label@v1
         with:
-          image: jlesage/baseimage-gui:ubuntu-24.04-v4
-          label: org.label-schema.version
-          registry-username: ${{ secrets.DOCKERHUB_USRNM }}
-          registry-password: ${{ secrets.DOCKERHUB_PASSWD }}
-          registry-endpoint: https://index.docker.io/v2/
+          image: "jlesage/baseimage-gui:ubuntu-24.04-v4"
+          label: "org.label-schema.version"
+          registry_username: ${{ secrets.DOCKERHUB_USRNM }}
+          registry_password: ${{ secrets.DOCKERHUB_PASSWD }}
+          registry_endpoint: https://index.docker.io/v2/
         
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
