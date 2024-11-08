@@ -31,9 +31,6 @@ jobs:
       contents: read
 
     steps:
-      - name: Print calling event data
-        run: echo ${{ github.event_name }}
-        
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -54,7 +51,7 @@ jobs:
           
   build:
     needs: check-new-version
-    if: ${{ vars.LATEST_BUILT_VERSION != needs.check-new-version.outputs.latest-version || github.event_name == 'workflow_dispatch' }}
+    if: ${{ vars.LATEST_BUILT_VERSION != needs.check-new-version.outputs.latest-version || github.event_name != 'schedule' }}
     runs-on: ubuntu-latest
     permissions: 
       contents: read
